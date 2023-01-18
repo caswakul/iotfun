@@ -38,6 +38,7 @@
 4. **Create Register**
 
 In NETPIE, we create *register* as follows.
+
 ![NETPIE2020-Experiment2-assets/Pasted image 20230117184744.png](NETPIE2020-Experiment2-assets/Pasted%20image%2020230117184744.png)
 
 In MQTTBox, we create *register* as follows. After the *register* is connected to NETPIE, we configure *register* to subscribe to topic '@msg/rama4DMlogs'. This topic name is meant here for device management (DM) logs where last-will messages from sensor and controller devices would be published. Of course, the topic can be any string meaningful to your own project, but the string must start with '@msg/' so NETPIE knows the messages published here are 'text'.
@@ -49,6 +50,7 @@ In MQTTBox, we create *register* as follows. After the *register* is connected t
 5. **Create Sensor in NETPIE**
 
 In NETPIE, we create *sensor* as follows.
+
 ![NETPIE2020-Experiment2-assets/Pasted image 20230117190409.png](NETPIE2020-Experiment2-assets/Pasted%20image%2020230117190409.png)
 
 Since *sensor* sends 'data' that would not be only 'text', in NETPIE, we will define 'Schema' for the expected structure of incoming data payload. Click 'Schema' and switch from the Editor Mode 'Tree' to 'Code'. 
