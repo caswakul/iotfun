@@ -126,7 +126,7 @@ Notice that there are other options in MQTT Client Settings that we have not use
 
 ## Exercise 1D
 
-F inally, this is a bit challenging experimental design. Can you try to test the functionality of 'QoS' settings in MQTT. It can be such a challenge because you might not be easily able to control how messages are lost during the transmission. Use load generator?  Use Wireshark?  Any idea here?
+Finally, this is a bit challenging experimental design. Can you try to test the functionality of 'QoS' settings in MQTT. It can be such a challenge because you might not be easily able to control how messages are lost during the transmission. Use load generator?  Use Wireshark?  Any idea here?
 
 
 
