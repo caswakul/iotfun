@@ -76,7 +76,7 @@ Click 'Save'. Enter 'Request name' as 'homeDev1' and 'Collection name' as 'MQTT-
 Now, if successfully done, then the right pane should display a new collection 'MQTT-NETPIE' with request 'homeDev1'. Click 'Connect' to make a connection from Postman to NETPIE for 'homeDev1' device:
 ![6_4_connectHomeDev1.png](NETPIE2020-Experiment1and2withPostman/6_4_connectHomeDev1.png)
 
-If all configurations are correct, then Postman should display status 'Connected' for 'homeDev1' device in both Postman and NETPIE:
+If all configurations are correct, then Postman should display status 'Connected' for 'homeDev1' device. And NETPIE should display status 'Online' for 'homeDev1':
 ![6_5HomeDev1ResultConnected.png](NETPIE2020-Experiment1and2withPostman/6_5HomeDev1ResultConnected.png)
 ![6_6HomeDev1ResultConnectedShown.png](NETPIE2020-Experiment1and2withPostman/6_6HomeDev1ResultConnectedShown.png)
 
@@ -85,8 +85,8 @@ If all configurations are correct, then Postman should display status 'Connected
 ![7HomeDev1ConnectedOthersNotyet.png](NETPIE2020-Experiment1and2withPostman/7HomeDev1ConnectedOthersNotyet.png)
 
 Repeat step 6 to add the remaining 3 devices, i.e., 'homeDev2', 'officeDev1' and 'officeDev2'. Once successfully configured and connected, you should see all the 4 devices with status 'Online' in NETPIE and 'Connected' in Postman.
-![7allConnected.png](NETPIE2020-Experiment1and2withPostman/7allConnected.png)
 ![7allConnected2.png](NETPIE2020-Experiment1and2withPostman/7allConnected2.png)
+![7allConnected.png](NETPIE2020-Experiment1and2withPostman/7allConnected.png)
 
 **Note that, in practice, we will have to configure all these devices not in Postman, but rather in the real hardware devices. But for convenience, in this stage, we will use Postman as a convenient device emulator.**
 
@@ -104,7 +104,7 @@ However, note that you should not see any message being received by 'homeDev2' i
 This is because 'homeDev2' has not yet subscribed to the topic 'homeAnnouncements'.
 
 
-9. Try now to have 'homeDev2' in Postman subsribe to the topic 'homeAnnouncements':
+9. Try now to have 'homeDev2' in Postman subscribe to the topic 'homeAnnouncements':
 ![9homeDev2sub.png](NETPIE2020-Experiment1and2withPostman/9homeDev2sub.png)
 
 Resend another message with payload "message B from homeDev1 to homeAnnouncements" to  the topic 'homeAnnouncements'. Now, both 'homeDev1' and 'homeDev2' should receive this new message:
@@ -131,12 +131,12 @@ From NETPIE, try 'enable' this device once more. And check that publish/subscrib
 
 ## Excercise 1A
 
-Recall that we have initially created 4 devices in 2 groups. And we have demonstrated sending messages from only one device 'homeDev1' so far. In a general case, can you try to verify that devices within the **same** group can communicate via pub/sub with each other?
+Recall that we have initially created 4 devices in 2 groups. And we have demonstrated sending messages from only one device 'homeDev1' so far. In a general case, can you try to verify that devices within the **same** group can communicate via publish/subcribe with each other?
 
 
 ## Exercise 1B
 
-Likewise, can you try to verify that devices from **different** groups cannot communicate via pub/sub with each other?  For instance, you can configure device 'officeDev1' to subscribe to the topic 'homeAnnouncements'. Then you can test whether 'officeDev1' gets the messages that are published to this topic by 'homeDev1'.
+Likewise, can you try to verify that devices from **different** groups cannot communicate via publish/subcribe with each other?  For instance, you can configure device 'officeDev1' to subscribe to the topic 'homeAnnouncements'. Then you can test whether 'officeDev1' gets the messages that are published to this topic by 'homeDev1'.
 
 
 ## Exercise 1C
