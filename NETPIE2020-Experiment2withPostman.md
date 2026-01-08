@@ -243,15 +243,25 @@ And at Postman, we should see incoming message from the published message of cal
 After you are happy with the panel for north-south devices, this final step is simple. We will duplicate and modify the panel for east-west devices. 
 ![alt p2_10dupPanel1.png](NETPIE2020-Experiment1and2withPostman/p2_10dupPanel1.png)
 
-Here is the final picture:
+Finishing the new panel modification, here is the final picture:
 ![p2_10dupPanel2.png](NETPIE2020-Experiment1and2withPostman/p2_10dupPanel2.png)
+
+Now it is time to verify that everything works. Move on to Exercises.
 
 
 ---
 
 ## Excercise 2A
 
-Verify that your dashboard functions perfectly as intended. You can try clicking "on EW" button and observing dashboard light status alternation between red and green, 'signal_controller' shadow data update, and incoming messages to Postman-emulated 'signal_controller'.
+Verify that your dashboard functions perfectly as intended. You can try the following steps:
+
+- Click "On EW" button.
+
+- Observe dashboard light status alternation between red and green
+
+- Observe 'signal_controller' shadow data update
+
+- Observe incoming messages to Postman-emulated 'signal_controller'.
 
 
 ## Exercise 2B
@@ -261,8 +271,10 @@ NETPIE 2020 comes equipped with other nice features, e.g., feed, trigger and eve
 
 ## Exercise 2C
 
-Later on, in the next IoT Fun part that introduces IoT hardwares, you can try out coding in C for programming your hardware boards and devices to interact with NETPIE. There, it will be generally flexible on how you should be able to extend nice and practical features. For instance, so far, the signal controller is controlled **manually** at NETPIE dashboard. In practice, you can implement a **automatic feedback control** based on real-time inputs from 'queue_sensor' readings. 
+Later on, in the next IoT Fun part that introduces IoT hardwares, you can try out coding in C for programming your hardware boards and devices to interact with NETPIE. There, it will be generally flexible on how you should be able to extend nice and practical features. For instance, so far, the signal controller is controlled **manually** at NETPIE dashboard. In practice, you can implement an **automatic feedback control** based on real-time inputs from 'queue_sensor' readings. You can also try to apply a machine learning model to forecast the sensor readings. You will learn more on this part after midterm exam.
 
+
+For the time being, Have FUN experimenting on what you are capable of. 
 
 You can refer to a standard NETPIE 2020 documentation at 
 
@@ -271,9 +283,6 @@ You can refer to a standard NETPIE 2020 documentation at
 Check also the free quota you have at
 
 [https://docs.netpie.io/en/quota-netpie.html](https://docs.netpie.io/en/quota-netpie.html)
-
-Have FUN!! 
-
 
 
 ---
