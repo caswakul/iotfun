@@ -4,7 +4,7 @@
 
 >Training material for 2102541 IoT Fundamentals Class at Department of Electrical Engineering, Faculty of Engineering, Chulalongkorn University, Thailand.
 >
->Aim: To introduce newcomers to NETPIE2020 with (i) device schema (ii) publish/subscribe of 'data'  from POSTMAN to emulate NETPIE devices (iii) dashboard.
+>Aim: To introduce newcomers to NETPIE2020 with (i) device schema (ii) publish/subscribe of 'data'  between Postman-emulated devices and NETPIE broker (iii) NETPIE dashboard.
 
 
 ## References
@@ -15,178 +15,254 @@
 
 ## Let's Continue
 
-1. Sign-up and log-in with your username and password at netpie.io. Once in NETPIE web, create your own project and enter your project description. Here, we create project 'smartMobility2022' for intelligent transportation system applications. 
+1. Sign-up and log-in with your username and password at netpie.io. Once in NETPIE web, create your own project and enter your project description. Here, we create project 'smartMobility2025' for intelligent transportation system application. 
+![p2_1createproj.png](NETPIE2020-Experiment1and2withPostman/p2_1createproj.png)
+![p2_1createprojSuccess.png](NETPIE2020-Experiment1and2withPostman/p2_1createprojSuccess.png)
 
-![NETPIE2020-Experiment2-assets/Pasted image 20230117182733.png](NETPIE2020-Experiment2-assets/Pasted%20image%2020230117182733.png)
+2. Enter menu 'Group' and create a new group. You can name and add description to your new groups. Here, I create 1 group, named 'samyan' to keep our devices installed at Samyan intersection. 
+![p2_2createGroup.png](NETPIE2020-Experiment1and2withPostman/p2_2createGroup.png)
+![p2_2createGroupSuccess.png](NETPIE2020-Experiment1and2withPostman/p2_2createGroupSuccess.png)
 
-![NETPIE2020-Experiment2-assets/Pasted image 20230117182806.png](NETPIE2020-Experiment2-assets/Pasted%20image%2020230117182806.png)
+3. Enter menu 'Devices'. Create devices. Here, we will create 2 devices, 'queue_sensor' and 'signal_controller' in this group. 
 
+- *queue_sensor* is an example sensor that publishes **data** to NETPIE. The sensor can report the current queue lengths at an intersection. For instance, there are **200** vehicles in-queue in the **north-south** direction of intersection, and **100** vehicles in-queue in the **east-west** direction of intersection.
 
-2. Enter menu 'Group' and create a new group. You can name and add description to your new groups. Here, I create 1 group, named 'rama4road' to keep our sensors installed on Rama-4 road network around Chula. 
-
-![NETPIE2020-Experiment2-assets/Pasted image 20230117183155.png](NETPIE2020-Experiment2-assets/Pasted%20image%2020230117183155.png)
-
-![NETPIE2020-Experiment2-assets/Pasted image 20230117183225.png](NETPIE2020-Experiment2-assets/Pasted%20image%2020230117183225.png)
-
-
-3. Enter menu 'Devices'. Create devices. Here, we will create 3 devices, 'register', 'sensor' and 'controller' in this group. 
-- *register* is responsible for keeping tracks of last-will messages published by all other devices when their status values are changed from online (connected) to offline (disconnected). 
-- *sensor* is an example sensor that publishes **data** to NETPIE.
-- *controller* is an example controller that gets data from NETPIE and takes corresponding necessary control actions, e.g., changing traffic signal light phase number (to specify which vehicle flows would be allowed green light at a road junction).
+- *signal_controller* is an example controller that gets data from NETPIE and takes corresponding necessary control actions to the physical world. For instance, the controller is responsible for switching the traffic signal lights between (**green**, **red**) and (**red**, **green**) for (**north-south**, **east-west**) directions of intersection.
 
 
-4. **Create Register**
+4. **Create 'queue_sensor' in NETPIE**
 
-In NETPIE, we create *register* as follows.
+In NETPIE, we create 'queue_sensor' as follows.
+![p2_4createSensor.png](NETPIE2020-Experiment1and2withPostman/p2_4createSensor.png)
 
-![NETPIE2020-Experiment2-assets/Pasted image 20230117184744.png](NETPIE2020-Experiment2-assets/Pasted%20image%2020230117184744.png)
+Since 'queue_sensor' sends 'data' that would not be only 'text', in NETPIE, we will define 'Schema' for the expected structure of incoming data payload. Click 'Schema' and switch from the Editor Mode 'Tree' to 'Code'. 
+![p2_4schemaSensorTree.png](NETPIE2020-Experiment1and2withPostman/p2_4schemaSensorTree.png)
+![p2_4schemaSensorCode.png](NETPIE2020-Experiment1and2withPostman/p2_4schemaSensorCode.png)
 
-In MQTTBox, we create *register* as follows. After the *register* is connected to NETPIE, we configure *register* to subscribe to topic '@msg/rama4DMlogs'. This topic name is meant here for device management (DM) logs where last-will messages from sensor and controller devices would be published. Of course, the topic can be any string meaningful to your own project, but the string must start with '@msg/' so NETPIE knows the messages published here are 'text'.
-
-![NETPIE2020-Experiment2-assets/Pasted image 20230117185257.png](NETPIE2020-Experiment2-assets/Pasted%20image%2020230117185257.png)
-![NETPIE2020-Experiment2-assets/Pasted image 20230117185537.png](NETPIE2020-Experiment2-assets/Pasted%20image%2020230117185537.png)
-
-
-5. **Create Sensor in NETPIE**
-
-In NETPIE, we create *sensor* as follows.
-
-![NETPIE2020-Experiment2-assets/Pasted image 20230117190409.png](NETPIE2020-Experiment2-assets/Pasted%20image%2020230117190409.png)
-
-Since *sensor* sends 'data' that would not be only 'text', in NETPIE, we will define 'Schema' for the expected structure of incoming data payload. Click 'Schema' and switch from the Editor Mode 'Tree' to 'Code'. 
-
-![NETPIE2020-Experiment2-assets/Pasted image 20230117190521.png](NETPIE2020-Experiment2-assets/Pasted%20image%2020230117190521.png)
-
-![NETPIE2020-Experiment2-assets/Pasted image 20230117191125.png](NETPIE2020-Experiment2-assets/Pasted%20image%2020230117191125.png)
-
-Device schema format must be in **JSON (JavaScript Object Notation)**. While there are many websites trying to describe JSON format, I personally find the following **original JSON inventor**'s post at [https://www.json.org](https://www.json.org) by *Douglas Crockford* the most concise and programmably meaningful. Check it out at your convenience. But, for the time being, we will define the schema of *sensor* as follows. And thanks to the readability of JSON, we can try here to explain the intended meaning.
+Device schema format must be in **JSON (JavaScript Object Notation)**. While there are many websites trying to describe JSON format, I personally find the following **original JSON inventor**'s post at [https://www.json.org](https://www.json.org) by *Douglas Crockford* the most concise and programmably meaningful. Check it out at your convenience. But, for the time being, we will define the schema of 'queue_sensor' as follows. And thanks to the readability of JSON, we can try here to explain the intended meaning.
 
 ```json
 {
   "additionalProperties": false,
   "properties": {
-    "vehicle_speed": {
-      "operation": {
-        "store": {
-          "ttl": "7d"
-        }
-      },
+    "vehicles_in_NSqueue": {
       "type": "number"
     },
-    "vehicle_type": {
-      "operation": {
-        "store": {
-          "ttl": "7d"
-        }
-      },
-      "type": "string"
+    "vehicles_in_EWqueue": {
+      "type": "number"
     }
   }
 }
 ```
 
-This sensor may represent a CCTV-AI (video camera with digital signal processing software). The software can keep track of the vehicle movement from the camera. The software can detect the vehicle speed in km/hr, which is a *number*. Based on the detectable shape and size of vehicle, the software can classify the vehicle as, e.g., either 'car' or 'motorcycle', which is a *string*. These "vehicle_speed" and "vehicle_type" form the main "properties" that we expect of the data from this sensor.  Once NETPIE gets the data, NETPIE performs the operation to store the value in NETPIE for 7 days, as configured by "ttl" or *time to live* equal to "7d".
+This sensor may represent a CCTV-AI (video camera with digital signal processing software). The software can keep track of the vehicle movement from the camera and determine the number of vehicles in queues. The software can count the number of queueing vehicles, which is a *number*, for each of vehicle flow directions arriving at the considered intersection. The direction can be either "north-south" or "east-west".
+Here, "vehicles_in_NSqueue" defines the number of vehicles in north-south queue. And "vehicles_in_EWqueue" defines the number of vehicles in east-west queue. These "vehicles_in_NSqueue" and "vehicles_in_EWqueue" form the main "properties" that we expect of the data from this sensor.
 
-Note that "additionalProperties" is here set to *false*. So, if *sensor* tries to send any other data values, in addition to "vehicle_speed" and "vehicle_type", then NETPIE will neglect those other data values and keep only the data values specified by "vehicle_speed" and "vehicle_type". 
+Note that "additionalProperties" is here set to *false*. So, if 'queue_sensor' tries to send any other data values, in addition to "vehicles_in_NSqueue" and "vehicles_in_EWqueue", then NETPIE will neglect those other data values and keep only the data values specified by "vehicles_in_NSqueue" and "vehicles_in_EWqueue". 
 
-Otherwise, if "additionalProperties" is set to *true*, then NETPIE will keep all other received data values as well. With that said, to prevent unnecessary confusion on stored data values, *sensor* is expected reasonably to send only data values whose syntax is well defined in the schema. That is the purpose of having the schema after all.
+Otherwise, if "additionalProperties" is set to *true*, then NETPIE will keep all other received data values as well. With that said, to prevent unnecessary confusion on stored data values, 'queue_sensor' is expected reasonably to send only data values whose syntax is well defined in the schema. That is the purpose of having the schema after all.
 
 Copy the JSON text and paste into the code box defining schema. Click 'SAVE'.
-
-![NETPIE2020-Experiment2-assets/Pasted image 20230117201354.png](NETPIE2020-Experiment2-assets/Pasted%20image%2020230117201354.png)
+![p2_4schemaSensorCodeEnter.png](NETPIE2020-Experiment1and2withPostman/p2_4schemaSensorCodeEnter.png)
 
 Try switching from 'Code' to 'Tree'. As a tree, we can naturally try clicking to hide or unhide JSON elements:
+![p2_4schemaSensorTreeRes.png](NETPIE2020-Experiment1and2withPostman/p2_4schemaSensorTreeRes.png)
 
-![NETPIE2020-Experiment2-assets/Pasted image 20230117201626.png](NETPIE2020-Experiment2-assets/Pasted%20image%2020230117201626.png)
+
+5.  **Create 'queue_sensor' in Postman**
+
+In Postman, we create 'queue_sensor' as usual.
+![p2_5postmanSensorAdd.png](NETPIE2020-Experiment1and2withPostman/p2_5postmanSensorAdd.png)
+
+Here, we save the created 'queue_sensor' in the collection 'MQTT-NETPIE'.
+![p2_5postmanSensorSave1.png](NETPIE2020-Experiment1and2withPostman/p2_5postmanSensorSave1.png)
+![p2_5postmanSensorSave2.png](NETPIE2020-Experiment1and2withPostman/p2_5postmanSensorSave2.png)
+
+And after connecting succesfully, we have the following.
+![p2_5postmanSensorSaveRes.png](NETPIE2020-Experiment1and2withPostman/p2_5postmanSensorSaveRes.png)
 
 
-6.  **Create Sensor in MQTTBox**
+6. **Publish data from 'queue_sensor' to NETPIE**
 
-In MQTTBox, we create *sensor* as follows. 
+Instead of using a user-specified topic (like in the first experiment), we will use a special topic of NETPIE, called '@shadow/data/update'. This special topic is used for the device to update its own status with NETPIE. The updated status will be persistent, time-stamped once receiving at NETPIE, and kept as a time series data (called **feed**). 
 
-![NETPIE2020-Experiment2-assets/Pasted image 20230117202642.png](NETPIE2020-Experiment2-assets/Pasted%20image%2020230117202642.png)
-
-Note that we configure *sensor* last-will message 'sensor is dying' to be published to topic '@msg/rama4DMlogs'. 
-
-Specify the topic '@shadow/data/update' for this *sensor* to publish its *data* message. Try publishing the first message from this sensor as follows. 
+For this 'queue_sensor' to publish its *data* message, try publishing the first message from this sensor as follows. 
 
 ```JSON
 {
-  "data": {
-    "vehicle_speed": 50,
-    "vehicle_type": "car"
+    "data": {
+        "vehicles_in_NSqueue": 200,
+        "vehicles_in_EWqueue": 100
+    }
+}
+```
+![p2_6SensorSend.png](NETPIE2020-Experiment1and2withPostman/p2_6SensorSend.png)
+
+If your *data* message is sent out successfully, then we should see in Postman:
+![p2_6SensorSendRes1.png](NETPIE2020-Experiment1and2withPostman/p2_6SensorSendRes1.png)
+
+If the message arrives successfully at NETPIE, then you should be able to see the latest data values shown in 'Shadow' of 'queue_sensor' in NETPIE:
+![p2_6SensorSendRes2.png](NETPIE2020-Experiment1and2withPostman/p2_6SensorSendRes2.png)
+
+This special topic '@shadow/data/update' in NETPIE is used to store the latest received data values from the 'queue_sensor'. If a new data message is published by the 'queue_sensor' and that message arrives at NETPIE, then the 'Shadow' data values of this 'queue_sensor' will be updated correspondingly. You can try this out by yourself by re-adjusting the data message payload, publish the message out, and check what NETPIE stores at the 'Shadow' of 'queue_sensor'.
+
+As an example, after a few times of updating the shadow data values, in Postman, we have:
+![p2_6SensorSendFeed.png](NETPIE2020-Experiment1and2withPostman/p2_6SensorSendFeed.png)
+
+Of course, you would have different trial results, but that is alright.
+
+In NETPIE, click 'Feed' in 'queue_sensor'. 
+![p2_6feed.png](NETPIE2020-Experiment1and2withPostman/p2_6feed.png)
+
+Then click 'Add datatag' to add the following data tags. 
+![p2_6feedNS.png](NETPIE2020-Experiment1and2withPostman/p2_6feedNS.png)
+![p2_6feedEW.png](NETPIE2020-Experiment1and2withPostman/p2_6feedEW.png)
+
+You should now see the plot of time series data kept in the shadow of 'queue_sensor'. Here is an example:
+![p2_6feedRes.png](NETPIE2020-Experiment1and2withPostman/p2_6feedRes.png)
+
+
+7. **Create 'signal_controller' in NETPIE and Postman**
+
+In NETPIE, we create 'signal_controller' as follows.
+![p2_7createSigCon1.png](NETPIE2020-Experiment1and2withPostman/p2_7createSigCon1.png)
+
+Define the following schema of 'signal_controller':
+
+```json
+{
+  "additionalProperties": false,
+  "properties": {
+    "green_in_NSqueue": {
+      "type": "boolean"
+    },
+    "green_in_EWqueue": {
+      "type": "boolean"
+    }
   }
 }
 ```
+![p2_7createSigCon2schema.png](NETPIE2020-Experiment1and2withPostman/p2_7createSigCon2schema.png)
 
-![NETPIE2020-Experiment2-assets/Pasted image 20230117203948.png](NETPIE2020-Experiment2-assets/Pasted%20image%2020230117203948.png)
+Note that we use "boolean" type to specify **true** or **false** status for opening **green** traffic signal light for the waiting queues in the north-south or east-west directions. Here, if the light is not **green**, then the light is **red**. There is no **yellow** light, for convenient simplicity.
 
-If your *data* message arrives successfully at NETPIE, then you should be able to see the latest data values shown in 'Shadow' of *sensor* in NETPIE:
-
-![NETPIE2020-Experiment2-assets/Pasted image 20230117204143.png](NETPIE2020-Experiment2-assets/Pasted%20image%2020230117204143.png)
-
-This special topic '@shadow/data/update' in NETPIE is used to store the latest received data values from the *sensor*. If a new data message is published by the *sensor* and that message arrives at NETPIE, then the 'Shadow' data values of this *sensor* will be updated correspondingly. You can try this out by yourself by re-adjusting the data message payload, publish the message out, and check what NETPIE stores at the 'Shadow' of *sensor*.
+In Postman, we create 'signal_controller' as usual and click 'Save' to save 'signal_controller' in collection 'MQTT-NETPIE'. Note that we configure 'signal_controller' to subscribe to topic "@msg/signal_controller_listen". This topic name is meant here for publishing any messages to 'signal_controller' device. The messages can serve as input commands to switch the traffic signal lights between (**green**, **red**) and (**red**, **green**) for (**north-south**, **east-west**) directions of intersection.
+After this configuration, we should have the following.
+![p2_7postmanSigCon.png](NETPIE2020-Experiment1and2withPostman/p2_7postmanSigCon.png)
 
 
-7. **NETPIE Dashboard**
+8. **Create NETPIE Dashboard**
 
-Finally, create a NETPIE dashboard for GUI displays.
+Finally, we will create a NETPIE dashboard for GUI displays of all created devices. 
 
-![NETPIE2020-Experiment2-assets/Pasted image 20230117204617.png](NETPIE2020-Experiment2-assets/Pasted%20image%2020230117204617.png)
+Click 'Create':
+![p2_8createDashboard1.png](NETPIE2020-Experiment1and2withPostman/p2_8createDashboard1.png)
+
+Enter dashboard name and description. Then click 'SAVE':
+![p2_8createDashboard2.png](NETPIE2020-Experiment1and2withPostman/p2_8createDashboard2.png)
 
 After entering a dashboard name and description, click 'SAVE'. Then we get:
-![NETPIE2020-Experiment2-assets/Pasted image 20230117204738.png](NETPIE2020-Experiment2-assets/Pasted%20image%2020230117204738.png)
+![p2_8createDashboardRes.png](NETPIE2020-Experiment1and2withPostman/p2_8createDashboardRes.png)
 
 Click to enter the dashboard.
 
-We have *sensor* sending its latest data values to store into its 'Shadow' with NETPIE. Next, so, click menu 'Setting', click 'Add device' to add this *sensor* device as a data source for the dashboard. And specify the priviledges as 'read shadow'. 
+In the dashboard, we first need to add sources of data to be displayed. Click 'Settings' and 'Add source':
+![p2_8DashboardSettingsAddsource1.png](NETPIE2020-Experiment1and2withPostman/p2_8DashboardSettingsAddsource1.png)
 
-![NETPIE2020-Experiment2-assets/Pasted image 20230117212555.png](NETPIE2020-Experiment2-assets/Pasted%20image%2020230117212555.png)
+We have 2 data sources from 2 NETPIE devices. 
 
-Click 'SAVE' and we get:
+First, let us add 'queue_sensor' by entering type, device and select priviledges that allow dashboard to "Read Shadow" and "Read Feed":
+![p2_8DashboardSettingsAddsource2.png](NETPIE2020-Experiment1and2withPostman/p2_8DashboardSettingsAddsource2.png)
 
-![NETPIE2020-Experiment2-assets/Pasted image 20230117212632.png](NETPIE2020-Experiment2-assets/Pasted%20image%2020230117212632.png)
+Click "SAVE" and we now have:
+![p2_8DashboardSettingsAddsource3.png](NETPIE2020-Experiment1and2withPostman/p2_8DashboardSettingsAddsource3.png)
 
-Click menu 'Dashboard' and click '+ Add panel'. Click the plus '+' sign of the panel:
+Second, let us add 'signal_controller' by entering type, device and select priviledges that allow dashboard to "Read Shadow", "Read Feed", and "Publish Message":
+![p2_8DashboardSettingsAddsource4.png](NETPIE2020-Experiment1and2withPostman/p2_8DashboardSettingsAddsource4.png)
 
-![NETPIE2020-Experiment2-assets/Pasted image 20230117212959.png](NETPIE2020-Experiment2-assets/Pasted%20image%2020230117212959.png)
+Click "SAVE" and we now have:
+![p2_8DashboardSettingsAddsource5.png](NETPIE2020-Experiment1and2withPostman/p2_8DashboardSettingsAddsource5.png)
 
-Configure what to display in this panel. Select appropriate 'TYPE' according to the data type to be displayed naturally. Enter all other required input for the widget. Note for VALUE input, click '+DEVICE' and click subsequently any needed drop-down information to dive into the value to be displayed by the widget. Here, as an example, the inputs are for displaying "vehicle_type" as text in the widget.
+9. **Add Panel for North-South Devices of Intersection**
 
-![NETPIE2020-Experiment2-assets/Pasted image 20230117213139.png](NETPIE2020-Experiment2-assets/Pasted%20image%2020230117213139.png)
+We organise our data display into 2 separate panels. One for north-south and the other for east-west devices of Samyan intersection. Let us add first north-south panel.
+![p2_9addPanel1.png](NETPIE2020-Experiment1and2withPostman/p2_9addPanel1.png)
 
-![NETPIE2020-Experiment2-assets/Pasted image 20230117213522.png](NETPIE2020-Experiment2-assets/Pasted%20image%2020230117213522.png)
+Enter title as 'north-south' and click 'DONE'.
+![p2_9addPanel2.png](NETPIE2020-Experiment1and2withPostman/p2_9addPanel2.png)
 
-Click 'SAVE' to finish the widget configuration. Then, we can see:
+At the panel, click the top plus sign "+" to add a new widget for 'queue_sensor' to display the number of vehicles in-queue by a *gauge*. Enter widget settings and click 'Done':
+![p2_9addPanel3.png](NETPIE2020-Experiment1and2withPostman/p2_9addPanel3.png)
 
-![NETPIE2020-Experiment2-assets/Pasted image 20230117213623.png](NETPIE2020-Experiment2-assets/Pasted%20image%2020230117213623.png)
+At the panel, click the top plus sign "+" to add a new widget for 'signal_controller' to display signal light status by *indicator*. Enter widget settings and click 'Done':
+![p2_9addPanel4.png](NETPIE2020-Experiment1and2withPostman/p2_9addPanel4.png)
 
-Likewise, add another panel and configure to display "vehicle_speed". 
+Now, we should see the following panel:
+![p2_9addPanel5.png](NETPIE2020-Experiment1and2withPostman/p2_9addPanel5.png)
 
-![NETPIE2020-Experiment2-assets/Pasted image 20230117213743.png](NETPIE2020-Experiment2-assets/Pasted%20image%2020230117213743.png)
+So far, the panel simply shows the sensor data or status of controller. Now, we will add another widget to control the 'signal_controller' from NETPIE dashboard. 
 
-Finally, the dashboard shows the latest shadow data values of *sensor*. You can try again publishing a new data message with different values for "vehicle_speed" and "vehcle_type", as well as notice the change update at the created dashboard here.
+At the panel, click the top plus sign "+" to add a new widget for 'signal_controller' by *button*. Enter the following widget settings. Note importantly that we will use "ONCLICK ACTION" to define a callback function that will be executed once the button is clicked. Since this callback function is quite lengthy, click "EDITOR" to open a new code entering box:
+![p2_9addPanel6.png](NETPIE2020-Experiment1and2withPostman/p2_9addPanel6.png)
 
-![NETPIE2020-Experiment2-assets/Pasted image 20230117213827.png](NETPIE2020-Experiment2-assets/Pasted%20image%2020230117213827.png)
+Into that code entering box, copy and paste the following code and click "Close".
+
+```script
+#["signal_controller"].publishMsg("signal_controller_listen","onNS_offEW"); 
+#["signal_controller"].writeShadow("green_in_NSqueue","true");
+#["signal_controller"].writeShadow("green_in_EWqueue","false");
+```
+
+![p2_9addPanel7.png](NETPIE2020-Experiment1and2withPostman/p2_9addPanel7.png)
+
+First line publishes a message "onNS_offEW" to the topic "signal_controller_listen". In real implamentation, when the 'signal_controller' hardware device receives this message, the device can treat it as an input command. For instance, "onNS_offEW" means "setting the traffic signal lights to be (**green**, **red**) for (**north-south**, **east-west**) directions of intersection "
+
+Second and third lines update the shadow data of 'signal_controller' accordingly. 
+
+Now click "Done" to finish this 'button' configuration:
+![p2_9addPanel8.png](NETPIE2020-Experiment1and2withPostman/p2_9addPanel8.png)
+
+This finishes 'north-south' panel. Click 'Save'. Importantly, if you forget to click 'Save' here, then all panel changes made will be ignored once you leave this dashboard instance. Remind yourself to always click 'Save'.
+![p2_9addPanel9.png](NETPIE2020-Experiment1and2withPostman/p2_9addPanel9.png)
+
+To test the button, try to click the button once:
+![p2_9addPanel10.png](NETPIE2020-Experiment1and2withPostman/p2_9addPanel10.png)
+
+You should see the status of shadow for the light to be 'green', as expected from the entered callback function:
+![p2_9addPanel11.png](NETPIE2020-Experiment1and2withPostman/p2_9addPanel11.png)
+
+The device 'signal_controller' should also show its shadow update accordingly:
+![p2_9addPanel13.png](NETPIE2020-Experiment1and2withPostman/p2_9addPanel13.png)
+
+And at Postman, we should see incoming message from the published message of callback function:
+![p2_9addPanel12.png](NETPIE2020-Experiment1and2withPostman/p2_9addPanel12.png)
+
+
+10. **Duplicate and Modify Panel for East-West Devices of Intersection**
+
+After you are happy with the panel for north-south devices, this final step is simple. We will duplicate and modify the panel for east-west devices. 
+![alt p2_10dupPanel1.png](NETPIE2020-Experiment1and2withPostman/p2_10dupPanel1.png)
+
+Here is the final picture:
+![p2_10dupPanel2.png](NETPIE2020-Experiment1and2withPostman/p2_10dupPanel2.png)
 
 
 ---
 
 ## Excercise 2A
 
-Recall that we have initially created 3 devices here, i.e., *sensor*, *register*, and *controller*. And we have demonstrated above how only one device can send its data values into NETPIE, which can then be displayed in the dashboard.
-
-You are encouraged to design your own experiment that involves the meaningful usage scenario of all these 3 devices ?
+Verify that your dashboard functions perfectly as intended. You can try clicking "on EW" button and observing dashboard light status alternation between red and green, 'signal_controller' shadow data update, and incoming messages to Postman-emulated 'signal_controller'.
 
 
 ## Exercise 2B
 
-Notice that we can configure systematically last-will messages of created devices. Here, can you try to test again the device registry functionality in keeping track of device status changes. 
+NETPIE 2020 comes equipped with other nice features, e.g., feed, trigger and event-hook. You are encouraged to try these feature out. 
 
 
 ## Exercise 2C
 
-NETPIE 2020 comes equipped with other nice features, e.g., feed, trigger and event-hook. You are encouraged to try these feature out. And also, later in the next IoT Fun part, introducing IoT hardwares, you can try out coding in C, etc., for programming your hardware boards and devices to interact with NETPIE. 
+Later on, in the next IoT Fun part that introduces IoT hardwares, you can try out coding in C for programming your hardware boards and devices to interact with NETPIE. There, it will be generally flexible on how you should be able to extend nice and practical features. For instance, so far, the signal controller is controlled **manually** at NETPIE dashboard. In practice, you can implement a **automatic feedback control** based on real-time inputs from 'queue_sensor' readings. 
+
 
 You can refer to a standard NETPIE 2020 documentation at 
 
@@ -203,5 +279,8 @@ Have FUN!!
 ---
 Noted By: C. Aswakul (17 Jan 2023)
 
-1stEd By: C. Aswakul (6 Jan 2025)
+1stEd By: C. Aswakul (8 Jan 2025)
 - Use Postman instead of MQTTbox 
+- Redesign whole experimental context of sensor and controller 
+- Elaborate in details for NETPIE dashboard experiment
+
